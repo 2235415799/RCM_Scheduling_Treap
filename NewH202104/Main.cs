@@ -24,12 +24,16 @@ namespace Huangbo.AStarPetri.Test
             Huangbo.AStarPetri.AStar aStar;
             Huangbo.AStarPetri.AStarNode goalNode;
             Huangbo.AStarPetri.AStarNode startNode;
+            //true：采用原方法
+            //false：采用Treap方法
+            bool method = false;
 
-            string fileName = "Chen2011Big_11112";  //The prefix of your input Petri net files.         fileName should be "XXXFigx_111_init.txt" or "XXXFigx_111_matrix.txt".   
-            //string fileName = "ChenFig5revised_11";  //The prefix of your input files. 
-            //string fileName = "Chen2011Big_11122";  //The prefix of your input files. 
+            //string fileName = "ChenFig6Extended_223";  //The prefix of your input Petri net files.         fileName should be "XXXFigx_111_init.txt" or "XXXFigx_111_matrix.txt".   
+            string fileName = "ChenFig5_44";  //The prefix of your input files. 
+            //string fileName = "Chen2011Big_11112";  //The prefix of your input files. 
             //string fileName = "ChenFig6Extended_121";  //The prefix of your input files.
             //string fileName = "Xiong98_1111";  //The prefix of your input files.
+            //string fileName = "Preliminary_11";  //The prefix of your input files.
 
 
             string[] initialMFile = new string[] { "./" + fileName + "_init.txt" };//A file containing the initial state, goal state, and the time information in activity places. It is a file with 3 lines and |P| columns. 会自动计算获取Petri网的N_P, N_P_R, MAX_TOK_PA
@@ -103,9 +107,8 @@ namespace Huangbo.AStarPetri.Test
                             Console.WriteLine("hMethod={0},fileName={1},fileName={2},running...", hMethod, initialMFile[0], incidenceMatrixFile[0]);
 
                             DateTime startTime = DateTime.Now;//搜索开始时间  the start time of the search 
-                            //true：采用原方法
-                            //false：采用Treap方法
-                            aStar.MyFindPath_AStar(fileName, startNode, goalNode, ep, ep2, hMethod, h2ndMethod, openSize, printScreen,false);
+                            
+                            aStar.MyFindPath_AStar(fileName, startNode, goalNode, ep, ep2, hMethod, h2ndMethod, openSize, printScreen,method);
                             DateTime endTime = DateTime.Now;//搜索结束时间 the end time of the search
                             TimeSpan elapsedTime = new TimeSpan(endTime.Ticks - startTime.Ticks);//运行时间 the running time of the search
 

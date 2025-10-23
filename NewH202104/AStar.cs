@@ -4,6 +4,9 @@ using System.Collections;
 using Tanis.Collections;
 using NewH202104;
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace Huangbo.AStarPetri
 {
@@ -368,6 +371,66 @@ namespace Huangbo.AStarPetri
                 //For h9
                 X = new int[] { 17, 14, 12, 12, 8, 5, 0, 18, 16, 12, 8, 5, 0, 0, 0 }; //the minimal processing time for a token from $p$ to its end place
                 ER = 6;  // the number of all resource units in a PN
+            }
+            else if (fileNameLower == "preliminary")
+            {
+                //General
+                M0r = new int[] { 1, 1, 1 };//the number of tokens in each resource place at the initial marking
+                Upi = new int[,]
+                {
+                            {0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 },{ 1, 0, 0 },{ 0, 0, 1 }, { 1, 0, 0 }, { 0, 0, 0 },{ 0, 0, 0 },{ 1, 0, 0 },{ 0, 1, 0 }, { 0, 0, 0}
+                }; //the number of resource units of $r\in P_R$ that are required by $p\in P_A$
+
+                //For h7 and h1 (if it is an ordianry net whose resource places have only one unit)
+                WRT = new decimal[,]
+                {
+                                        { 2, 1, 2 },{ 2, 0, 2 },{ 2, 0 ,0 },{ 0, 0, 0 },{ 4, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 },{ 3, 5, 0 },{ 0, 5, 0 },{ 0, 0, 0 },{ 0, 0, 0 }
+                };//the weighted resource time matrix
+
+                //这两个没改
+                //For h8
+                MRT = new decimal[] { 17, 14, 12, 12, 8, 5, 0, 18, 16, 12, 8, 5, 0, 0, 0 };//the minimal total time of EOTs that is required for an available token in $p$ to move to its end place
+                MR3 = new decimal[,]
+                {
+                                       {1,1,1,0,2,1},{1,1,1,0,2,1},{0,1,1,0,2,1},{1,0,1,0,1,1},{0,0,1,0,1,1},
+                                       {0,0,1,0,0,1},{0,0,0,0,0,1},{0,1,0,1,2,1},{0,1,0,1,2,1},{0,1,0,1,2,0},
+                                       {0,1,0,0,2,0},{0,1,0,0,1,0},{0,0,0,0,1,0},{0,0,0,0,0,0},{0,0,0,0,0,0}
+                 };//a place $r\in P_R$ to its end place requires at most $n$ units of $r$
+
+                //For h9
+                X = new int[] { 17, 14, 12, 12, 8, 5, 0, 18, 16, 12, 8, 5, 0, 0, 0 }; //the minimal processing time for a token from $p$ to its end place
+                ER = 6;  // the number of all resource units in a PN
+                
+            }
+            else if (fileNameLower == "preliminary2")
+            {
+                //General
+                M0r = new int[] { 1, 1, 1 };//the number of tokens in each resource place at the initial marking
+                Upi = new int[,]
+                {
+                            {0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 },{ 1, 0, 0 },{ 0, 0, 1 }, { 1, 0, 0 }, { 0, 0, 0 },{ 0, 0, 0 },{ 1, 0, 0 },{ 0, 1, 0 }, { 0, 0, 0}
+                }; //the number of resource units of $r\in P_R$ that are required by $p\in P_A$
+
+                //For h7 and h1 (if it is an ordianry net whose resource places have only one unit)
+                WRT = new decimal[,]
+                {
+                                        { 2, 2, 1 },{ 2, 0, 1 },{ 2, 0 ,0 },{ 0, 0, 0 },{ 2, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 },{ 2, 5, 0 },{ 0, 5, 0 },{ 0, 0, 0 },{ 0, 0, 0 }
+                };//the weighted resource time matrix
+
+                //这两个没改
+                //For h8
+                MRT = new decimal[] { 17, 14, 12, 12, 8, 5, 0, 18, 16, 12, 8, 5, 0, 0, 0 };//the minimal total time of EOTs that is required for an available token in $p$ to move to its end place
+                MR3 = new decimal[,]
+                {
+                                       {1,1,1,0,2,1},{1,1,1,0,2,1},{0,1,1,0,2,1},{1,0,1,0,1,1},{0,0,1,0,1,1},
+                                       {0,0,1,0,0,1},{0,0,0,0,0,1},{0,1,0,1,2,1},{0,1,0,1,2,1},{0,1,0,1,2,0},
+                                       {0,1,0,0,2,0},{0,1,0,0,1,0},{0,0,0,0,1,0},{0,0,0,0,0,0},{0,0,0,0,0,0}
+                 };//a place $r\in P_R$ to its end place requires at most $n$ units of $r$
+
+                //For h9
+                X = new int[] { 17, 14, 12, 12, 8, 5, 0, 18, 16, 12, 8, 5, 0, 0, 0 }; //the minimal processing time for a token from $p$ to its end place
+                ER = 6;  // the number of all resource units in a PN
+
             }
             else if (fileNameLower == "chenfig5extended")
             {
@@ -1272,6 +1335,7 @@ namespace Huangbo.AStarPetri
         /**** TreapTest ****/
         private Treap _OPENBYTREAP;
         private Treap _CLOSEDBYTREAP;
+        private Treap _RECORDBTREAP;
         /**** TreapTest ****/
 
         #endregion
@@ -1312,6 +1376,8 @@ namespace Huangbo.AStarPetri
 
             _OPENBYTREAP = new Treap();
             _CLOSEDBYTREAP = new Treap();
+            _RECORDBTREAP = new Treap();
+
             Read_initfile(initialMFile);
             Read_matrixfile(incidenceMatrixFile);
 
@@ -1602,13 +1668,13 @@ namespace Huangbo.AStarPetri
             for (int i = 0; i < aHeap.Count; ++i)
             {
                 AStarNode aNodeInHeap = (AStarNode)aHeap[i];
-                /*
+                
                 if (aNodeInHeap.fValue >= aNode.fValue)
                     break;
                 else
                     ++position;
-                */
-                if (aNodeInHeap.fValue > aNode.fValue)
+                
+                /*if (aNodeInHeap.fValue > aNode.fValue)
                     break;
                 else if (aNodeInHeap.fValue == aNode.fValue)
                 {
@@ -1618,7 +1684,7 @@ namespace Huangbo.AStarPetri
                         if (aNodeInHeap.fValue != aNode.fValue)
                             break;
                         int cmp = orderCompare(aNodeInHeap.M, aNode.M);
-                        if (cmp == -1)
+                        if (cmp == -1) //aNodeInHeap.M < aNode.M
                             position++;
                         else
                             break;
@@ -1627,6 +1693,7 @@ namespace Huangbo.AStarPetri
                 }
                 else
                     position++;
+                */
             }
             if (position == aHeap.Count)
                 aHeap.Add(aNode);//加到末尾处
@@ -1947,39 +2014,26 @@ namespace Huangbo.AStarPetri
             _StartNode = startNode;
             _GoalNode = goalNode;
 
+            //初始化置空
             _OPENBYTREAP.Clear();
             _CLOSEDBYTREAP.Clear();
+
             _Successors.Clear();
             _Solution.Clear();
             _NExpandedNodes = 0;
 
-
             _Loop = 0;
-            _OPENBYTREAP.InsertState(_StartNode);//将初始标识放入OPEN表中  Put the initial marking into OPEN.
-            //_OPENBYTREAP.NewElement(_StartNode);
-            Console.WriteLine("/***********/");
-            Console.WriteLine(_StartNode.fValue);
-            Console.WriteLine(_OPENBYTREAP.root.aStarNodes.root.next.aStarNode.fValue);
+            _OPENBYTREAP.Insert(_StartNode);//将初始标识放入T_O中  Put the initial marking into T_O.
 
-            while (_OPENBYTREAP.CountTotalStates() >= 0)
+            while (_OPENBYTREAP.CountTotalStates() > 0)
             {
                 _Loop++;
 
 
-                if (_OPENBYTREAP.CountTotalStates() == 0)//若OPEN表为空，程序异常退出 If OPEN is empty, exit with failure.
-                {
-                    Console.WriteLine("******* Open is null. Exit with failure! ********");
-                    return;
-                }
+                //取T_O中的第一个节点  Get the first node in T_O. 
+                AStarNode nodeCurrent = _OPENBYTREAP.Pop();
+                    
 
-
-
-                //取OPEN列表中的第一个节点  Get the first node in OPEN. 
-                //AStarNode nodeCurrent = _OPENBYTREAP.PopMinByPriority();
-                AStarNode nodeCurrent = _OPENBYTREAP.PopState();
-
-
-                //_CLOSEDBYTREAP.NewElement(nodeCurrent);
                 //如果当前节点是目的节点，则回溯构造出路径  If the current node equals the goal node, construct a schedule from the goal node to the initial node.
                 if (nodeCurrent.IsGoal())
                 {
@@ -2002,33 +2056,29 @@ namespace Huangbo.AStarPetri
                 //扩展currentNode并对每个子节点进行验证
                 foreach (AStarNode aNodeInSuccessors in _Successors)
                 {
-                    TreapNode nodeInCLOSED = _CLOSEDBYTREAP.SearchState(aNodeInSuccessors).TreapNode;
-                    //如果ClOSED中存在一个与S相同的S'（aNodeInCLOSED）
-                    if (nodeInCLOSED != null)
+                    (int, TreapNode, ListNode) searchResult = _CLOSEDBYTREAP.Search(aNodeInSuccessors);
+                    if(searchResult.Item1 == 1)
                     {
-                        AStarNode aNodeInCLOSED = _CLOSEDBYTREAP.SearchState(aNodeInSuccessors).AStarNode;
-                        int cmp = _CLOSEDBYTREAP.Compare(aNodeInCLOSED, aNodeInSuccessors);
-                        if (cmp == 1)//如果g(S')＞g(S),删除S'并尝试将S插入OPEN
+                        if(aNodeInSuccessors.fValue < searchResult.Item3.aStarNode.fValue)
                         {
-                            _CLOSEDBYTREAP.DeleteState(ref nodeInCLOSED, aNodeInCLOSED);
-                            _OPENBYTREAP.InsertState(aNodeInSuccessors);
-                        }
-                        else //if (cmp == 1)  如果g(S')≤g(S)，进入下一步
-                        {
-                            continue;
+                            _CLOSEDBYTREAP.Delete(searchResult.Item3.aStarNode);
+                            _OPENBYTREAP.Insert(aNodeInSuccessors);
                         }
                     }
-                    else {
-                        _OPENBYTREAP.InsertState(aNodeInSuccessors);
+                    else
+                    {
+                        _OPENBYTREAP.Insert(aNodeInSuccessors);
                     }
                 } //The end of foreach (AStarNode aNodeInSuccessors in _Successors)
                 
                 //将currentNode移到CLOSED中
-                _CLOSEDBYTREAP.InsertState(nodeCurrent);
+                _CLOSEDBYTREAP.Insert(nodeCurrent);
                 ++_NExpandedNodes;//已扩展节点数
                 
             }// The end of while (_OPENBYTREAP.Count > 0)
 
+            Console.WriteLine("******* Open is null. Exit with failure! ********");
+            return;
         }//FindPath_AStar
 
 
